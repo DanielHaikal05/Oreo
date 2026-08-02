@@ -1,0 +1,17 @@
+/home/daniel/oreo/install/motor_control/share/ament_index/resource_index/package_run_dependencies/motor_control
+/home/daniel/oreo/install/motor_control/share/ament_index/resource_index/parent_prefix_path/motor_control
+/home/daniel/oreo/install/motor_control/share/motor_control/environment/ament_prefix_path.sh
+/home/daniel/oreo/install/motor_control/share/motor_control/environment/ament_prefix_path.dsv
+/home/daniel/oreo/install/motor_control/share/motor_control/environment/path.sh
+/home/daniel/oreo/install/motor_control/share/motor_control/environment/path.dsv
+/home/daniel/oreo/install/motor_control/share/motor_control/local_setup.bash
+/home/daniel/oreo/install/motor_control/share/motor_control/local_setup.sh
+/home/daniel/oreo/install/motor_control/share/motor_control/local_setup.zsh
+/home/daniel/oreo/install/motor_control/share/motor_control/local_setup.dsv
+/home/daniel/oreo/install/motor_control/share/motor_control/package.dsv
+/home/daniel/oreo/install/motor_control/share/ament_index/resource_index/packages/motor_control
+/home/daniel/oreo/install/motor_control/share/motor_control/cmake/motor_controlConfig.cmake
+/home/daniel/oreo/install/motor_control/share/motor_control/cmake/motor_controlConfig-version.cmake
+/home/daniel/oreo/install/motor_control/share/motor_control/package.xml
+/home/daniel/oreo/install/motor_control/lib/motor_control/keyboard_listener.py
+/home/daniel/oreo/install/motor_control/lib/motor_control/motor_control.py

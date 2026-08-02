@@ -1,0 +1,1 @@
+/home/daniel/oreo/build/oreo_description/ament_cmake_core/oreo_descriptionConfig-version.cmake
