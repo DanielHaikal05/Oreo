@@ -5,3 +5,8 @@ log/
 __pycache__/
 *.py[cod]
 *.egg-info/
+
+# Linux core dumps
+core
+core.*
+*.core

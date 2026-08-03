@@ -7,10 +7,19 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
+    python3-pip \
+    libsdl2-2.0-0 \
+    libsdl2-image-2.0-0 \   
     python3-colcon-common-extensions \
     python3-rosdep \
     ros-jazzy-desktop \
     && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install \
+    --no-cache-dir \
+    --break-system-packages \
+    "asyncio_for_robotics>=1.3.1" \
+    "PySDL2>=0.9.0"
 
 RUN rosdep init || true \
     && rosdep update
