@@ -1,3 +1,0 @@
-[console_scripts]
-ros_node = gogo_keyboard.ros_node:main
-

@@ -1,9 +1,0 @@
-/home/daniel/Oreo/build/motor_control/CMakeFiles/uninstall.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/motor_control_uninstall.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/test.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/edit_cache.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/rebuild_cache.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/list_install_components.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/install.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/install/local.dir
-/home/daniel/Oreo/build/motor_control/CMakeFiles/install/strip.dir

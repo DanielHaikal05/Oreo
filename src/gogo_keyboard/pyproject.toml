@@ -3,7 +3,7 @@ name = "gogo_keyboard"
 version = "1.0.3"
 description = "Press keyboard 🦍 Get key 🦍 Python Asyncio for Robotics"
 readme = "README.md"
-license = "MIT"
+license = { text = "MIT" }
 authors = [
   { name = "Elian NEPPEL", email = "elian.dev@posteo.com" }
 ]

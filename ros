@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+WORKSPACE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+IMAGE_NAME="ros2-dev-7da55af580d1:jazzy"
+LIDAR_PORT="${LIDAR_PORT:-/dev/ttyUSB0}"
+
+ROS_ENV='source /opt/ros/jazzy/setup.bash
+if [ -f /workspace/install/setup.bash ]; then
+    source /workspace/install/setup.bash
+fi'
+
+BASE_ARGS=(
+    --rm -it
+    --network host
+    --ipc=host
+    --user "$(id -u):$(id -g)"
+    --env HOME=/tmp
+    --env "ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}"
+    --mount "type=bind,src=$WORKSPACE_DIR,dst=/workspace"
+    --workdir /workspace
+)
+
+if [[ -c "$LIDAR_PORT" ]]; then
+    BASE_ARGS+=(
+        --device "$LIDAR_PORT:$LIDAR_PORT"
+        --group-add "$(stat -c '%g' "$LIDAR_PORT")"
+    )
+fi
+
+run_container() {
+    docker run "${BASE_ARGS[@]}" "$IMAGE_NAME" "$@"
+}
+
+case "${1:-shell}" in
+    shell)
+        run_container bash -lc "$ROS_ENV; exec bash"
+        ;;
+
+    build-image)
+        docker build -t "$IMAGE_NAME" "$WORKSPACE_DIR"
+        ;;
+
+    build)
+        run_container bash -lc "$ROS_ENV; colcon build --symlink-install"
+        ;;
+
+    rviz)
+        if [[ -z "${DISPLAY:-}" ]]; then
+            echo "Error: DISPLAY is not set."
+            echo "Run './ros rviz' from the Pi's HDMI desktop or VNC desktop terminal."
+            exit 1
+        fi
+
+        XAUTH_FILE="${XAUTHORITY:-$HOME/.Xauthority}"
+
+        if [[ ! -r "$XAUTH_FILE" ]]; then
+            echo "Error: cannot read Xauthority file: $XAUTH_FILE"
+            exit 1
+        fi
+
+        GUI_ARGS=(
+            --env "DISPLAY=$DISPLAY"
+            --env XAUTHORITY=/tmp/.Xauthority
+            --env QT_X11_NO_MITSHM=1
+            --mount "type=bind,src=$XAUTH_FILE,dst=/tmp/.Xauthority,readonly"
+            --mount type=bind,src=/tmp/.X11-unix,dst=/tmp/.X11-unix
+        )
+
+        if [[ -c /dev/dri/renderD128 ]]; then
+            GUI_ARGS+=(
+                --device /dev/dri/renderD128
+                --group-add "$(stat -c '%g' /dev/dri/renderD128)"
+            )
+        fi
+
+        docker run "${BASE_ARGS[@]}" "${GUI_ARGS[@]}"             "$IMAGE_NAME"             bash -lc "$ROS_ENV; rviz2"
+        ;;
+
+    *)
+        echo "Usage:"
+        echo "  ./ros shell"
+        echo "  ./ros build-image"
+        echo "  ./ros build"
+        echo "  ./ros rviz"
+        exit 1
+        ;;
+esac
