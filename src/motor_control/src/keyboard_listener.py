@@ -18,7 +18,7 @@ class Keyboard_to_cmd(Node):
         key = key_data['symbol']
         
         if key not in self.pressed_keys:
-            raise ValueError(f"Keyboard command '{key}' not recognized")
+            self.get_logger().error(f"Keyboard command '{key}' not recognized")
         else:
             self.pressed_keys[key] = key_data['is_pressed']
     
