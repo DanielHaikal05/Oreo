@@ -1,0 +1,22 @@
+running develop
+running egg_info
+creating src/gogo_keyboard.egg-info
+writing src/gogo_keyboard.egg-info/PKG-INFO
+writing dependency_links to src/gogo_keyboard.egg-info/dependency_links.txt
+writing entry points to src/gogo_keyboard.egg-info/entry_points.txt
+writing requirements to src/gogo_keyboard.egg-info/requires.txt
+writing top-level names to src/gogo_keyboard.egg-info/top_level.txt
+writing manifest file 'src/gogo_keyboard.egg-info/SOURCES.txt'
+reading manifest file 'src/gogo_keyboard.egg-info/SOURCES.txt'
+writing manifest file 'src/gogo_keyboard.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/daniel/Oreo/install/gogo_keyboard/lib/python3.10/site-packages/gogo-keyboard.egg-link (link to src)
+Installing ros_node script to /home/daniel/Oreo/install/gogo_keyboard/lib/gogo_keyboard
+
+Installed /home/daniel/Oreo/build/gogo_keyboard/src
+running symlink_data
+creating /home/daniel/Oreo/install/gogo_keyboard/share/ament_index
+creating /home/daniel/Oreo/install/gogo_keyboard/share/ament_index/resource_index
+creating /home/daniel/Oreo/install/gogo_keyboard/share/ament_index/resource_index/packages
+symbolically linking /home/daniel/Oreo/build/gogo_keyboard/resource/gogo_keyboard -> /home/daniel/Oreo/install/gogo_keyboard/share/ament_index/resource_index/packages
+symbolically linking /home/daniel/Oreo/build/gogo_keyboard/package.xml -> /home/daniel/Oreo/install/gogo_keyboard/share/gogo_keyboard

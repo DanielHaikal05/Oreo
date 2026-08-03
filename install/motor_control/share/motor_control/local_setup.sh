@@ -1,1 +1,1 @@
-/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.sh
+/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.sh

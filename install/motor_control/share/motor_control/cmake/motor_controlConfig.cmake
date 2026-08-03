@@ -1,1 +1,1 @@
-/home/daniel/oreo/build/motor_control/ament_cmake_core/motor_controlConfig.cmake
+/home/daniel/Oreo/build/motor_control/ament_cmake_core/motor_controlConfig.cmake

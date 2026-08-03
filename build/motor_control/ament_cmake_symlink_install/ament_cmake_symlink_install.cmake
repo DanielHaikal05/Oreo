@@ -23,7 +23,7 @@ function(ament_cmake_symlink_install_directory cmake_current_source_dir)
 
   # make destination absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/daniel/oreo/install/motor_control/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/daniel/Oreo/install/motor_control/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -123,7 +123,7 @@ function(ament_cmake_symlink_install_files cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/daniel/oreo/install/motor_control/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/daniel/Oreo/install/motor_control/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -181,7 +181,7 @@ function(ament_cmake_symlink_install_programs cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/daniel/oreo/install/motor_control/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/daniel/Oreo/install/motor_control/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -251,7 +251,7 @@ function(ament_cmake_symlink_install_targets)
 
     # make destination an absolute path and ensure that it exists
     if(NOT IS_ABSOLUTE "${destination}")
-      set(destination "/home/daniel/oreo/install/motor_control/${destination}")
+      set(destination "/home/daniel/Oreo/install/motor_control/${destination}")
     endif()
     if(NOT EXISTS "${destination}")
       file(MAKE_DIRECTORY "${destination}")
@@ -310,47 +310,47 @@ message(STATUS "Execute custom install script")
 
 # begin of custom install code
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motor_control" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motor_control" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motor_control" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motor_control" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motor_control" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motor_control" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motor_control" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motor_control" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motor_control/environment")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motor_control/environment")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motor_control/environment")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motor_control/environment")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motor_control/environment")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motor_control/environment")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motor_control/environment")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motor_control/environment")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motor_control/environment")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motor_control/environment")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motor_control/environment")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motor_control/environment")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motor_control/environment")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motor_control/environment")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motor_control")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motor_control")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motor_control")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motor_control")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motor_control")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motor_control")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motor_control")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motor_control")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motor_control")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motor_control")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motor_control")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motor_control")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motor_control")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motor_control")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motor_control")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motor_control")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motor_control")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motor_control")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motor_control")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motor_control")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/packages/motor_control" "DESTINATION" "share/ament_index/resource_index/packages")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/packages/motor_control" "DESTINATION" "share/ament_index/resource_index/packages")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/packages/motor_control" "DESTINATION" "share/ament_index/resource_index/packages")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_index/share/ament_index/resource_index/packages/motor_control" "DESTINATION" "share/ament_index/resource_index/packages")
 
-# install(FILES "/home/daniel/oreo/build/motor_control/ament_cmake_core/motor_controlConfig.cmake" "/home/daniel/oreo/build/motor_control/ament_cmake_core/motor_controlConfig-version.cmake" "DESTINATION" "share/motor_control/cmake")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/build/motor_control/ament_cmake_core/motor_controlConfig.cmake" "/home/daniel/oreo/build/motor_control/ament_cmake_core/motor_controlConfig-version.cmake" "DESTINATION" "share/motor_control/cmake")
+# install(FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_core/motor_controlConfig.cmake" "/home/daniel/Oreo/build/motor_control/ament_cmake_core/motor_controlConfig-version.cmake" "DESTINATION" "share/motor_control/cmake")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/build/motor_control/ament_cmake_core/motor_controlConfig.cmake" "/home/daniel/Oreo/build/motor_control/ament_cmake_core/motor_controlConfig-version.cmake" "DESTINATION" "share/motor_control/cmake")
 
-# install(FILES "/home/daniel/oreo/src/motor_control/package.xml" "DESTINATION" "share/motor_control")
-ament_cmake_symlink_install_files("/home/daniel/oreo/src/motor_control" FILES "/home/daniel/oreo/src/motor_control/package.xml" "DESTINATION" "share/motor_control")
+# install(FILES "/home/daniel/Oreo/src/motor_control/package.xml" "DESTINATION" "share/motor_control")
+ament_cmake_symlink_install_files("/home/daniel/Oreo/src/motor_control" FILES "/home/daniel/Oreo/src/motor_control/package.xml" "DESTINATION" "share/motor_control")
 
 # install(PROGRAMS "src/keyboard_listener.py" "src/motor_control.py" "DESTINATION" "lib/motor_control")
-ament_cmake_symlink_install_programs("/home/daniel/oreo/src/motor_control" PROGRAMS "src/keyboard_listener.py" "src/motor_control.py" "DESTINATION" "lib/motor_control")
+ament_cmake_symlink_install_programs("/home/daniel/Oreo/src/motor_control" PROGRAMS "src/keyboard_listener.py" "src/motor_control.py" "DESTINATION" "lib/motor_control")

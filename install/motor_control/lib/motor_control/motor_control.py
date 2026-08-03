@@ -1,1 +1,1 @@
-/home/daniel/oreo/src/motor_control/src/motor_control.py
+/home/daniel/Oreo/src/motor_control/src/motor_control.py

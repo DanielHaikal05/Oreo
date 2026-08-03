@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/daniel/oreo/src/motor_control
+CMAKE_SOURCE_DIR = /home/daniel/Oreo/src/motor_control
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/daniel/oreo/build/motor_control
+CMAKE_BINARY_DIR = /home/daniel/Oreo/build/motor_control
 
 # Utility rule file for motor_control_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/motor_control_uninstall.dir/compiler_depend.make
 include CMakeFiles/motor_control_uninstall.dir/progress.make
 
 CMakeFiles/motor_control_uninstall:
-	/usr/bin/cmake -P /home/daniel/oreo/build/motor_control/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /home/daniel/Oreo/build/motor_control/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 motor_control_uninstall: CMakeFiles/motor_control_uninstall
 motor_control_uninstall: CMakeFiles/motor_control_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/motor_control_uninstall.dir/clean:
 .PHONY : CMakeFiles/motor_control_uninstall.dir/clean
 
 CMakeFiles/motor_control_uninstall.dir/depend:
-	cd /home/daniel/oreo/build/motor_control && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/daniel/oreo/src/motor_control /home/daniel/oreo/src/motor_control /home/daniel/oreo/build/motor_control /home/daniel/oreo/build/motor_control /home/daniel/oreo/build/motor_control/CMakeFiles/motor_control_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/daniel/Oreo/build/motor_control && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/daniel/Oreo/src/motor_control /home/daniel/Oreo/src/motor_control /home/daniel/Oreo/build/motor_control /home/daniel/Oreo/build/motor_control /home/daniel/Oreo/build/motor_control/CMakeFiles/motor_control_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/motor_control_uninstall.dir/depend
 

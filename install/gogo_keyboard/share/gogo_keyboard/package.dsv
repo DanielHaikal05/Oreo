@@ -1,0 +1,9 @@
+source;share/gogo_keyboard/hook/pythonpath.ps1
+source;share/gogo_keyboard/hook/pythonpath.dsv
+source;share/gogo_keyboard/hook/pythonpath.sh
+source;share/gogo_keyboard/hook/ament_prefix_path.ps1
+source;share/gogo_keyboard/hook/ament_prefix_path.dsv
+source;share/gogo_keyboard/hook/ament_prefix_path.sh
+source;../../build/gogo_keyboard/src/share/gogo_keyboard/hook/pythonpath_develop.ps1
+source;../../build/gogo_keyboard/src/share/gogo_keyboard/hook/pythonpath_develop.dsv
+source;../../build/gogo_keyboard/src/share/gogo_keyboard/hook/pythonpath_develop.sh

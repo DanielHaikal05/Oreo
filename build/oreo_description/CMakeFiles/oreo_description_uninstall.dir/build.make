@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/daniel/oreo/src/oreo_description
+CMAKE_SOURCE_DIR = /home/daniel/Oreo/src/oreo_description
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/daniel/oreo/build/oreo_description
+CMAKE_BINARY_DIR = /home/daniel/Oreo/build/oreo_description
 
 # Utility rule file for oreo_description_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/oreo_description_uninstall.dir/compiler_depend.make
 include CMakeFiles/oreo_description_uninstall.dir/progress.make
 
 CMakeFiles/oreo_description_uninstall:
-	/usr/bin/cmake -P /home/daniel/oreo/build/oreo_description/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /home/daniel/Oreo/build/oreo_description/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 oreo_description_uninstall: CMakeFiles/oreo_description_uninstall
 oreo_description_uninstall: CMakeFiles/oreo_description_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/oreo_description_uninstall.dir/clean:
 .PHONY : CMakeFiles/oreo_description_uninstall.dir/clean
 
 CMakeFiles/oreo_description_uninstall.dir/depend:
-	cd /home/daniel/oreo/build/oreo_description && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/daniel/oreo/src/oreo_description /home/daniel/oreo/src/oreo_description /home/daniel/oreo/build/oreo_description /home/daniel/oreo/build/oreo_description /home/daniel/oreo/build/oreo_description/CMakeFiles/oreo_description_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/daniel/Oreo/build/oreo_description && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/daniel/Oreo/src/oreo_description /home/daniel/Oreo/src/oreo_description /home/daniel/Oreo/build/oreo_description /home/daniel/Oreo/build/oreo_description /home/daniel/Oreo/build/oreo_description/CMakeFiles/oreo_description_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/oreo_description_uninstall.dir/depend
 

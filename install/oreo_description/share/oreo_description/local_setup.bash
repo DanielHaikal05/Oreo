@@ -1,1 +1,1 @@
-/home/daniel/oreo/build/oreo_description/ament_cmake_environment_hooks/local_setup.bash
+/home/daniel/Oreo/build/oreo_description/ament_cmake_environment_hooks/local_setup.bash

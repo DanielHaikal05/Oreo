@@ -1,8 +1,8 @@
-# Install script for directory: /home/daniel/oreo/src/oreo_description
+# Install script for directory: /home/daniel/Oreo/src/oreo_description
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/daniel/oreo/install/oreo_description")
+  set(CMAKE_INSTALL_PREFIX "/home/daniel/Oreo/install/oreo_description")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -43,7 +43,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/daniel/oreo/build/oreo_description/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake")
+  include("/home/daniel/Oreo/build/oreo_description/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -54,5 +54,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/daniel/oreo/build/oreo_description/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/daniel/Oreo/build/oreo_description/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
