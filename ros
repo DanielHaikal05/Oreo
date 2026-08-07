@@ -17,6 +17,7 @@ BASE_ARGS=(
     --user "$(id -u):$(id -g)"
     --env HOME=/tmp
     --env "ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}"
+    --env "GPIOZERO_PIN_FACTORY=$GPIOZERO_PIN_FACTORY"
     --mount "type=bind,src=$WORKSPACE_DIR,dst=/workspace"
     --workdir /workspace
 )
@@ -27,6 +28,15 @@ if [[ -c "$LIDAR_PORT" ]]; then
         --group-add "$(stat -c '%g' "$LIDAR_PORT")"
     )
 fi
+
+for gpiochip in /dev/gpiochip*; do
+    if [[ -c "$gpiochip" ]]; then
+        BASE_ARGS+=(
+            --device "$gpiochip:$gpiochip"
+            --group-add "$(stat -c '%g' "$gpiochip")"
+        )
+    fi
+done
 
 run_container() {
     docker run "${BASE_ARGS[@]}" "$IMAGE_NAME" "$@"
