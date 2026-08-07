@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-colcon-common-extensions \
     python3-rosdep \
     ros-jazzy-desktop \
+    python3-gpiozero \
+    python3-lgpio \
     && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install \
