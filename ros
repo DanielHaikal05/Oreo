@@ -17,7 +17,7 @@ BASE_ARGS=(
     --user "$(id -u):$(id -g)"
     --env HOME=/tmp
     --env "ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}"
-    --env "GPIOZERO_PIN_FACTORY=$GPIOZERO_PIN_FACTORY"
+    --env "GPIOZERO_PIN_FACTORY=${GPIOZERO_PIN_FACTORY:-lgpio}"
     --mount "type=bind,src=$WORKSPACE_DIR,dst=/workspace"
     --workdir /workspace
 )
