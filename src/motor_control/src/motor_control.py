@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from gpizero import PWMOutputDevice
+from gpiozero import PWMOutputDevice, DigitalOutputDevice
 from time import sleep, time
 import rclpy
 from rclpy.node import Node
@@ -18,7 +18,10 @@ m3n = DigitalOutputDevice(27)
 mp = [m1p, m2p, m3p]
 mn = [m1n, m2n, m3n]
 
-def motor_sleep() -> none:
+V_tr = 1
+V_rot = 1
+
+def motor_sleep() -> None:
     m1p.value = 0; m1n.off()
     m2p.value = 0; m2n.off() 
     m3p.value = 0; m3n.off()
@@ -34,12 +37,16 @@ def translate_axis(axis=1, speed=1.0, duration=None) -> None:
     speed = max(-1.0, min(1.0, speed))
 
     if speed > 0:
+        p1.value = 0.0
+        n1.off()
         p2.value = abs(speed)
         n2.off()
         p3.value = 1.0 - abs(speed)
         n3.on()
     
     elif speed < 0:
+        p1.value = 0.0
+        n1.off()
         p2.value = 1.0 - abs(speed)
         n2.on()
         p3.value = abs(speed)
@@ -80,7 +87,7 @@ def brake(duration=1, sleep_after=True) -> None:
     m2p.value = 1.0; m2n.on()
     m3p.value = 1.0; m3n.on()
     
-    sleep(durartion)
+    sleep(duration)
     if sleep_after:
         motor_sleep()
 
@@ -103,11 +110,11 @@ def translate_normal_to_axis(axis=1, speed=1.0, duration=None) -> None:
         n3.on()
 
     elif speed < 0:
-        p1.value = 1.0 - speed
+        p1.value = 1.0 - abs(speed)
         n1.on()
-        p2.value = speed * cos(pi/3)
+        p2.value = abs(speed) * cos(pi/3)
         n2.off()
-        p3.value = speed * cos(pi/3)
+        p3.value = abs(speed) * cos(pi/3)
         n3.off()
     
     if duration is not None:
@@ -119,7 +126,7 @@ def translate_normal_to_axis(axis=1, speed=1.0, duration=None) -> None:
 
 class Motor_controller(Node):
     def __init__(self):
-        super.__init__(self)
+        super().__init__('motor_controller')
         self.sub = self.create_subscription(String, '/motor_cmd', self.motor_voltage, 10)
         self.current_cmd = 'Sleep'
         self.prev_cmd = 'Sleep'
@@ -128,28 +135,44 @@ class Motor_controller(Node):
         self.prev_cmd = self.current_cmd
         self.current_cmd = msg.data
         
-        switch self.current_cmd:
-            case('Brake'):
+        match self.current_cmd:
+            case 'Brake':
                 brake()
-            case('Sleep'):
+            case 'Sleep':
                 motor_sleep()
-            case('Forward'):
+            case 'Forward':
                 translate_axis(axis=1, speed=V_tr)
-            case('Backward'):
+            case 'Backward':
                 translate_axis(axis=1, speed=-V_tr)
-            case('Forward-left'):
+            case 'Forward-left':
                 translate_axis(axis=2, speed=V_tr)   
-            case('Forward-right'):
+            case 'Forward-right':
                 translate_axis(axis=3, speed=V_tr) 
-            case('Backward-left'):
+            case 'Backward-left':
                 translate_axis(axis=3, speed=-V_tr)   
-            case('Backard-right'):
+            case 'Backward-right':
                 translate_axis(axis=2, speed=-V_tr)
-            case('Left'):
+            case 'Left':
                 translate_normal_to_axis(axis=1, speed=V_tr)
-            case('Right'):
+            case 'Right':
                 translate_normal_to_axis(axis=1, speed=-V_tr)
-            case('Rotate_CCW'):
+            case 'Rotate_CCW':
                 rotate(speed=V_rot)
-            case('Rotate_CW'):
+            case 'Rotate_CW':
                 rotate(speed=-V_rot)
+
+ 
+def main(args=None):
+    rclpy.init(args=args)
+    node = Motor_controller()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        motor_sleep()
+        node.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
