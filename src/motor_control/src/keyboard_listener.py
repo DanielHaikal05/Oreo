@@ -11,7 +11,7 @@ class Keyboard_to_cmd(Node):
         self.pub = self.create_publisher(String, '/motor_cmd', 10)
         self.timer = self.create_timer(0.1, self.send_motor_cmd)
         
-        self.pressed_keys = {'W': False, 'A': False, 'S': False, 'D': False, 'Space': False, 'Right': False, 'Left': False}
+        self.pressed_keys = {'W': False, 'A': False, 'S': False, 'D': False, 'Space': False, 'Right': False, 'Left': False, '1': False, '2': False, '3': False}
     
     def retrieve_key(self, msg):
         key_data = json.loads(msg.data)
@@ -60,7 +60,16 @@ class Keyboard_to_cmd(Node):
 
         elif self.pressed_keys['Left'] and not (self.pressed_keys['W'] or self.pressed_keys['A'] or self.pressed_keys['S'] or self.pressed_keys['D'] or self.pressed_keys['Right']):
             msg.data = 'Rotate_CCW'
-        
+            
+        elif self.pressed_keys['1'] and not (self.pressed_keys['2'] or self.pressed_keys['3']):
+            msg.data = 'Motor 1'
+
+        elif self.pressed_keys['2'] and not (self.pressed_keys['1'] or self.pressed_keys['3']):
+            msg.data = 'Motor 2'
+
+        elif self.pressed_keys['3'] and not (self.pressed_keys['1'] or self.pressed_keys['2']):
+            msg.data = 'Motor 3'
+                  
         else:
             msg.data = 'Sleep'
         

@@ -26,9 +26,10 @@ def motor_sleep() -> None:
     m2p.value = 0; m2n.off() 
     m3p.value = 0; m3n.off()
     
-def translate_axis(axis=1, speed=1.0, duration=None) -> None:
+def translate_axis(node, axis=1, speed=1.0, duration=None) -> None:
     if axis!=1 and axis!=2 and axis!=3:
-        raise ValueError("Axis in translate_axis must be 1, 2, or 3")
+        node.get_logger().error(f"Axis in translate_axis must be 1, 2, or 3, given: {axis}")
+        return
         
     p1 = mp[(axis+2)%3]; n1 = mn[(axis+2)%3]
     p2 = mp[(axis+0)%3]; n2 = mn[(axis+0)%3]
@@ -82,6 +83,9 @@ def rotate(speed=1.0, duration=None) -> None:
         sleep(duration)
         motor_sleep()
 
+    if speed == 0:
+        motor_sleep()
+
 def brake(duration=1, sleep_after=True) -> None:
     m1p.value = 1.0; m1n.on()    
     m2p.value = 1.0; m2n.on()
@@ -91,9 +95,10 @@ def brake(duration=1, sleep_after=True) -> None:
     if sleep_after:
         motor_sleep()
 
-def translate_normal_to_axis(axis=1, speed=1.0, duration=None) -> None:
+def translate_normal_to_axis(node, axis=1, speed=1.0, duration=None) -> None:
     if axis!=1 and axis!=2 and axis!=3:
-        raise ValueError("Axis in translate_axis must be 1, 2, or 3")
+        node.get_logger().error(f"Axis in translate_normal_to_axis must be 1, 2, or 3, given: {axis}")
+        return
         
     p1 = mp[(axis+2)%3]; n1 = mn[(axis+2)%3]
     p2 = mp[(axis+0)%3]; n2 = mn[(axis+0)%3]
@@ -124,6 +129,38 @@ def translate_normal_to_axis(axis=1, speed=1.0, duration=None) -> None:
     if speed == 0:
         motor_sleep()
 
+def actuate_motor(node, motor=1, speed=1.0, duration=None) -> None:
+    if motor!=1 and motor!=2 and motor!=3:
+        node.get_logger().error(f"Motor in actuate_motor must be 1, 2, or 3, given: {motor}")
+        return
+        
+    p1 = mp[(motor+2)%3]; n1 = mn[(motor+2)%3]
+    p2 = mp[(motor+0)%3]; n2 = mn[(motor+0)%3]
+    p3 = mp[(motor+1)%3]; n3 = mn[(motor+1)%3] 
+    
+    if speed > 0:
+        p1.value = speed
+        n1.off()
+        p2.value = 0.0
+        n2.off()
+        p3.value = 0.0
+        n3.off()
+    
+    elif speed < 0:
+        p1.value = 1.0 - abs(speed)
+        n1.on()
+        p2.value = 0.0
+        n2.off()
+        p3.value = 0.0
+        n3.off()
+
+    if duration is not None:
+        sleep(duration)
+        speed = 0
+            
+    if speed == 0:
+        motor_sleep()
+
 class Motor_controller(Node):
     def __init__(self):
         super().__init__('motor_controller')
@@ -141,27 +178,33 @@ class Motor_controller(Node):
             case 'Sleep':
                 motor_sleep()
             case 'Forward':
-                translate_axis(axis=1, speed=V_tr)
+                translate_axis(self, axis=1, speed=V_tr)
             case 'Backward':
-                translate_axis(axis=1, speed=-V_tr)
+                translate_axis(self, axis=1, speed=-V_tr)
             case 'Forward-left':
-                translate_axis(axis=2, speed=V_tr)   
+                translate_axis(self, axis=2, speed=V_tr)   
             case 'Forward-right':
-                translate_axis(axis=3, speed=V_tr) 
+                translate_axis(self, axis=3, speed=V_tr) 
             case 'Backward-left':
-                translate_axis(axis=3, speed=-V_tr)   
+                translate_axis(self, axis=3, speed=-V_tr)   
             case 'Backward-right':
-                translate_axis(axis=2, speed=-V_tr)
+                translate_axis(self, axis=2, speed=-V_tr)
             case 'Left':
-                translate_normal_to_axis(axis=1, speed=V_tr)
+                translate_normal_to_axis(self, axis=1, speed=V_tr)
             case 'Right':
-                translate_normal_to_axis(axis=1, speed=-V_tr)
+                translate_normal_to_axis(self, axis=1, speed=-V_tr)
             case 'Rotate_CCW':
                 rotate(speed=V_rot)
             case 'Rotate_CW':
                 rotate(speed=-V_rot)
+            case 'Motor 1':
+                actuate_motor(self, motor=1, speed=V_tr)
+            case 'Motor 2':
+                actuate_motor(self, motor=2, speed=V_tr)
+            case 'Motor 3':
+                actuate_motor(self, motor=3, speed=V_tr)
+                
 
- 
 def main(args=None):
     rclpy.init(args=args)
     node = Motor_controller()
