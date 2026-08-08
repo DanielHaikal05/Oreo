@@ -40,18 +40,18 @@ def translate_axis(node, axis=1, speed=1.0, duration=None) -> None:
     if speed > 0:
         p1.value = 0.0
         n1.off()
-        p2.value = abs(speed)
-        n2.off()
-        p3.value = 1.0 - abs(speed)
-        n3.on()
-    
-    elif speed < 0:
-        p1.value = 0.0
-        n1.off()
         p2.value = 1.0 - abs(speed)
         n2.on()
         p3.value = abs(speed)
         n3.off()
+    
+    elif speed < 0:
+        p1.value = 0.0
+        n1.off()
+        p2.value = abs(speed)
+        n2.off()
+        p3.value = 1.0 - abs(speed)
+        n3.on()
     
     if duration is not None:
         sleep(duration)
@@ -64,20 +64,20 @@ def rotate(speed=1.0, duration=None) -> None:
     speed = max(-1.0, min(1.0, speed))
     
     if speed > 0:
-        m1p.value = abs(speed)
-        m1n.off()
-        m2p.value = abs(speed)
-        m2n.off()        
-        m3p.value = abs(speed)
-        m3n.off()
-    
-    elif speed < 0:
         m1p.value = 1.0 - abs(speed)
         m1n.on()
         m2p.value = 1.0 - abs(speed)
         m2n.on()        
         m3p.value = 1.0 - abs(speed)
         m3n.on()
+    
+    elif speed < 0:
+        m1p.value = abs(speed)
+        m1n.off()
+        m2p.value = abs(speed)
+        m2n.off()        
+        m3p.value = abs(speed)
+        m3n.off()
     
     if duration is not None:
         sleep(duration)
@@ -107,20 +107,20 @@ def translate_normal_to_axis(node, axis=1, speed=1.0, duration=None) -> None:
     speed = max(-1.0, min(1.0, speed))
     
     if speed > 0:
-        p1.value = speed
-        n1.off()
-        p2.value = 1.0 - speed * cos(pi/3)
-        n2.on()
-        p3.value = 1.0 - speed * cos(pi/3)
-        n3.on()
-
-    elif speed < 0:
         p1.value = 1.0 - abs(speed)
         n1.on()
         p2.value = abs(speed) * cos(pi/3)
         n2.off()
         p3.value = abs(speed) * cos(pi/3)
         n3.off()
+
+    elif speed < 0:
+        p1.value = abs(speed)
+        n1.off()
+        p2.value = 1.0 - abs(speed) * cos(pi/3)
+        n2.on()
+        p3.value = 1.0 - abs(speed) * cos(pi/3)
+        n3.on()
     
     if duration is not None:
         sleep(duration)
