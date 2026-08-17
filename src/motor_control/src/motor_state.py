@@ -103,7 +103,7 @@ class Motor_state(Node):
                 self.x[i,0] = self.x_bar[edge_index][i][0]
 
             valid = self.is_valid[:,i]
-            self.x[i,1:] = np.zeros_like(self.x[i:,1:])
+            self.x[i,1:] = np.zeros_like(self.x[i,1:])
             if np.any(valid):
                 self.x[i,1:] = np.mean(self.x_bar[valid,i,1:], axis=0)
 
@@ -122,9 +122,9 @@ class Motor_state(Node):
     def detect_timeout(self):
         t = time()
         for i in range(3):
-            if np.any(self.t_prev[:,i] is None): 
+            if np.any(a is None for a in self.t_prev[:,i]): 
                 continue
-            if np.all(t > self.t_prev[:,i] + self.timeout) and np.all(t > self.t_prev[:,i] + self.timeout):
+            if np.all(t > self.t_prev[:,i] + self.timeout):
                 self.x_bar[:,i,1:] = np.array([[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]])
                 self.x[i,1:] = np.array([0.0, 0.0])
                 self.t_prev[:,i] = np.array([None, None, None, None])
