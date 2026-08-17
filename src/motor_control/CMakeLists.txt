@@ -28,5 +28,7 @@ ament_package()
 install(PROGRAMS
   src/keyboard_listener.py
   src/motor_control.py
+  src/joint_state_plotter.py
+  src/motor_state.py
   DESTINATION lib/${PROJECT_NAME}
 )
