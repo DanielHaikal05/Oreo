@@ -6,7 +6,7 @@ import json
 
 class Keyboard_to_cmd(Node):
     def __init__(self):
-        super().__init__('Key_from std_msgs.msg import Float32to_cmd')
+        super().__init__('Keyboard_to_cmd')
         self.sub = self.create_subscription(String, '/key_press', self.retrieve_key, 10)
         self.pub_cmd = self.create_publisher(String, '/motor_cmd', 10)
         self.pub_vel = self.create_publisher(Float32, 'wheel_vel', 10)
