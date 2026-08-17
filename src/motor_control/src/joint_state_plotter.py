@@ -55,12 +55,15 @@ class JS_Plotter(Node):
         qdd = msg.effort
 
         self.t = np.append(self.t, t)
-        self.qd1 = np.append(self.qd1, qd[0])
-        self.qd2 = np.append(self.qd2, qd[1])
-        self.qd3 = np.append(self.qd3, qd[2])
-        self.qdd1 = np.append(self.qdd1, qdd[0])
-        self.qdd2 = np.append(self.qdd2, qdd[1])
-        self.qdd3 = np.append(self.qdd3, qdd[2])       
+        keep = self.t >= t - self.window_size   
+
+        self.t = self.t[keep]
+        self.qd1 = np.append(self.qd1, qd[0])[keep]
+        self.qd2 = np.append(self.qd2, qd[1])[keep]
+        self.qd3 = np.append(self.qd3, qd[2])[keep]
+        self.qdd1 = np.append(self.qdd1, qdd[0])[keep]
+        self.qdd2 = np.append(self.qdd2, qdd[1])[keep]
+        self.qdd3 = np.append(self.qdd3, qdd[2])[keep]  
 
         self.update_plots()
 
