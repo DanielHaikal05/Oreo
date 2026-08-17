@@ -50,8 +50,8 @@ class Motor_state(Node):
         self.timeout = 2
 
         self.t_prev = np.array([[None, None, None],
-                                [None, None, None]
-                                [None, None, None]
+                                [None, None, None],
+                                [None, None, None],
                                 [None, None, None]], dtype=object)
 
         self.is_valid = np.array([[False, False, False],
