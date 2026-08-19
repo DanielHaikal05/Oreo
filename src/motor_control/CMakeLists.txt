@@ -30,5 +30,6 @@ install(PROGRAMS
   src/motor_control.py
   src/joint_state_plotter.py
   src/motor_state.py
+  src/motor_control_1.py
   DESTINATION lib/${PROJECT_NAME}
 )

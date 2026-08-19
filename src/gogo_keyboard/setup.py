@@ -17,6 +17,11 @@ setup(
             ["package.xml"],
         ),
     ],
+    package_data={
+        'gogo_keyboard': [
+            'icons/*.png',
+        ],
+    },
     install_requires=["setuptools"],
     zip_safe=True,
     maintainer="Daniel",
