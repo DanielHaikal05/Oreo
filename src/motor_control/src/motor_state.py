@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from gpiozero import DigitalInputDevice
-from time import time
+from time import monotonic
 from sensor_msgs.msg import JointState
 from math import pi
 import numpy as np
@@ -29,7 +29,7 @@ def encoder_direction(seq1, seq2):
     elif (seq2, seq1) in [([0,0], [1,0]), ([1,0], [1,1]), ([1,1], [0,1]), ([0,1], [0,0])]:
         return -1
     else:
-        raise ValueError(f"Encoder sequence ({seq1},{seq2}) invalid")
+        return 0
 
 
 class Motor_state(Node):
@@ -59,55 +59,73 @@ class Motor_state(Node):
                                   [False, False, False],
                                   [False, False, False]])
 
-        for encoder_pin in (e11, e12, e21, e22, e31, e32):
-            encoder_pin.when_activated = self.read_encoder
-            encoder_pin.when_deactivated = self.read_encoder
+        e11.when_activated   = lambda: self.read_encoder(0, 0, 1)
+        e11.when_deactivated = lambda: self.read_encoder(0, 0, 0)
+
+        e12.when_activated   = lambda: self.read_encoder(0, 1, 1)
+        e12.when_deactivated = lambda: self.read_encoder(0, 1, 0)
+
+        e21.when_activated   = lambda: self.read_encoder(1, 0, 1)
+        e21.when_deactivated = lambda: self.read_encoder(1, 0, 0)
+
+        e22.when_activated   = lambda: self.read_encoder(1, 1, 1)
+        e22.when_deactivated = lambda: self.read_encoder(1, 1, 0)
+
+        e31.when_activated   = lambda: self.read_encoder(2, 0, 1)
+        e31.when_deactivated = lambda: self.read_encoder(2, 0, 0)
+
+        e32.when_activated   = lambda: self.read_encoder(2, 1, 1)
+        e32.when_deactivated = lambda: self.read_encoder(2, 1, 0)
     
-    def read_encoder(self):
-        encoder_reading = encoders_status()
-            
-        t = time()
+    
+    def read_encoder(self, m, c, s):
+        if self.encoders[m][c] == s:
+            self.get_logger().warning("Called read_encoder with no change")
+            return
         
-        for i in range(3):
-            if np.all(encoder_reading[i] == self.encoders[i]):
-                continue
-            
-            direction = encoder_direction(self.encoders[i], encoder_reading[i])
-            if direction != self.direction[i]:
-                self.x[i,1:] = np.array([0,0])
-                self.x_bar[:,i,1:] = np.array([[0,0], [0,0], [0,0], [0,0]])
-                self.direction[i] = direction
-                self.t_prev[:,i] = None
-                self.is_valid[:,i] = False
-                
-            self.encoders[i] = encoder_reading[i]
+        encoder_reading = self.encoders.copy()
+        encoder_reading[m][c] = s
+        t = monotonic()
 
-            a = encoder_reading[i][0]; b = encoder_reading[i][1]
-            edge_index = 3*a + b - 2*a*b
+        direction = encoder_direction(self.encoders[m], encoder_reading[m])
+        if direction == 0:
+            self.get_logger().error(f"Invalid transition: {self.encoders[m]} --> {encoder_reading[m]}")
+            return
+        
+        if direction != self.direction[m]:
+            self.x[m,1:] = np.array([0,0])
+            self.x_bar[:,m,1:] = np.array([[0,0], [0,0], [0,0], [0,0]])
+            self.direction[m] = direction
+            self.t_prev[:,m] = None
+            self.is_valid[:,m] = False  
+        self.encoders[m] = encoder_reading[m]
 
-            if self.t_prev[edge_index][i] is None: # If direction is changed, acc and vel are set to 0, position is unchanged, time is reset
-                self.t_prev[edge_index][i] = t
-                continue
+        a = encoder_reading[m][0]; b = encoder_reading[m][1]
+        edge_index = 3*a + b - 2*a*b
 
-            dt = t - self.t_prev[edge_index][i]
-            self.t_prev[edge_index][i] = t
-            qi = self.x_bar[edge_index][i][0]
-            qdi = self.x_bar[edge_index][i][1]
+        if self.t_prev[edge_index][m] is None:
+            self.t_prev[edge_index][m] = t
+            return
 
-            self.x_bar[edge_index][i][0] += self.direction[i] * (2*pi/11)
-            self.x_bar[edge_index][i][1] = self.direction[i] * (2*pi/11) * (1/dt)
-            self.x_bar[edge_index][i][2] = (self.x_bar[edge_index][i][1] - qdi) / dt
-            self.is_valid[edge_index][i] = True
+        dt = t - self.t_prev[edge_index][m]
+        self.t_prev[edge_index][m] = t
+        qdi = self.x_bar[edge_index][m][1]
 
-            if edge_index == 0:
-                self.x[i,0] = self.x_bar[edge_index][i][0]
+        self.x_bar[edge_index][m][0] += self.direction[m] * (2*pi/11)
+        self.x_bar[edge_index][m][1] = self.direction[m] * (2*pi/11) * (1/dt)
+        self.x_bar[edge_index][m][2] = (self.x_bar[edge_index][m][1] - qdi) / dt
+        self.is_valid[edge_index][m] = True
 
-            valid = self.is_valid[:,i]
-            self.x[i,1:] = np.zeros_like(self.x[i,1:])
-            if np.any(valid):
-                self.x[i,1:] = np.mean(self.x_bar[valid,i,1:], axis=0)
+        if edge_index == 0:
+            self.x[m,0] = self.x_bar[edge_index][m][0]
+
+        valid = self.is_valid[:,m]
+        self.x[m,1:] = np.zeros_like(self.x[m,1:])
+        if np.any(valid):
+            self.x[m,1:] = np.mean(self.x_bar[valid,m,1:], axis=0)
 
         self.publish_joint_state()
+
 
     def publish_joint_state(self):
         msg = JointState()
@@ -120,9 +138,9 @@ class Motor_state(Node):
         self.pub.publish(msg)
 
     def detect_timeout(self):
-        t = time()
+        t = monotonic()
         for i in range(3):
-            if np.any(a is None for a in self.t_prev[:,i]): 
+            if any(a is None for a in self.t_prev[:,i]): 
                 continue
             if np.all(t > self.t_prev[:,i] + self.timeout):
                 self.x_bar[:,i,1:] = np.array([[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]])
