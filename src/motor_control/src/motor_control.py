@@ -152,6 +152,10 @@ class Motor_controller(Node):
 
             error = self.W_des[i] - self.x[i,1]
             if abs(self.x[i,2]) > self.acc_threshold or abs(error) < self.acceptable_vel_error:
+                if abs(self.x[i,2]) > self.acc_threshold:
+                    self.get_logger().warning("Waiting for acceleation to settle")
+                else:
+                    self.get_logger().warning("Velocity error deemed acceptable")
                 continue
 
             if abs(error) > self.reset_vel_error:
