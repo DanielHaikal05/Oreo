@@ -33,66 +33,7 @@ def motor_sleep(node, motor=None) -> None:
     m1p.value = 0; m1n.off()
     m2p.value = 0; m2n.off() 
     m3p.value = 0; m3n.off()
-    
-def translate_axis(node, axis=1, duty=1.0, duration=None) -> None:
-    if axis!=1 and axis!=2 and axis!=3:
-        node.get_logger().error(f"Axis in translate_axis must be 1, 2, or 3, given: {axis}")
-        return
-        
-    p1 = mp[(axis+2)%3]; n1 = mn[(axis+2)%3]
-    p2 = mp[(axis+0)%3]; n2 = mn[(axis+0)%3]
-    p3 = mp[(axis+1)%3]; n3 = mn[(axis+1)%3] 
-    
-    duty = max(-1.0, min(1.0, duty))
 
-    if duty > 0:
-        p1.value = 0.0
-        n1.off()
-        p2.value = 1.0 - abs(duty)
-        n2.on()
-        p3.value = abs(duty)
-        n3.off()
-    
-    elif duty < 0:
-        p1.value = 0.0
-        n1.off()
-        p2.value = abs(duty)
-        n2.off()
-        p3.value = 1.0 - abs(duty)
-        n3.on()
-    
-    if duration is not None:
-        sleep(duration)
-        duty = 0
-    
-    if duty == 0:
-        motor_sleep()
-        
-def rotate(duty=1.0, duration=None) -> None:
-    duty = max(-1.0, min(1.0, duty))
-    
-    if duty > 0:
-        m1p.value = 1.0 - abs(duty)
-        m1n.on()
-        m2p.value = 1.0 - abs(duty)
-        m2n.on()        
-        m3p.value = 1.0 - abs(duty)
-        m3n.on()
-    
-    elif duty < 0:
-        m1p.value = abs(duty)
-        m1n.off()
-        m2p.value = abs(duty)
-        m2n.off()        
-        m3p.value = abs(duty)
-        m3n.off()
-    
-    if duration is not None:
-        sleep(duration)
-        motor_sleep()
-
-    if duty == 0:
-        motor_sleep()
 
 def brake(duration=1, sleep_after=True) -> None:
     m1p.value = 1.0; m1n.on()    
@@ -103,63 +44,6 @@ def brake(duration=1, sleep_after=True) -> None:
     if sleep_after:
         motor_sleep()
 
-def translate_normal_to_axis(node, axis=1, duty=1.0, duration=None) -> None:
-    if axis!=1 and axis!=2 and axis!=3:
-        node.get_logger().error(f"Axis in translate_normal_to_axis must be 1, 2, or 3, given: {axis}")
-        return
-        
-    p1 = mp[(axis+2)%3]; n1 = mn[(axis+2)%3]
-    p2 = mp[(axis+0)%3]; n2 = mn[(axis+0)%3]
-    p3 = mp[(axis+1)%3]; n3 = mn[(axis+1)%3]
-    
-    duty = max(-1.0, min(1.0, duty))
-    
-    if duty > 0:
-        p1.value = 1.0 - abs(duty)
-        n1.on()
-        p2.value = abs(duty) * cos(pi/3)
-        n2.off()
-        p3.value = abs(duty) * cos(pi/3)
-        n3.off()
-
-    elif duty < 0:
-        p1.value = abs(duty)
-        n1.off()
-        p2.value = 1.0 - abs(duty) * cos(pi/3)
-        n2.on()
-        p3.value = 1.0 - abs(duty) * cos(pi/3)
-        n3.on()
-    
-    if duration is not None:
-        sleep(duration)
-        duty = 0
-    
-    if duty == 0:
-        motor_sleep()
-
-def actuate_motor(node, motor=1, duty=1.0, duration=None) -> None:
-    if motor!=1 and motor!=2 and motor!=3:
-        node.get_logger().error(f"Motor in actuate_motor must be 1, 2, or 3, given: {motor}")
-        return
-        
-    p1 = mp[(motor+2)%3]; n1 = mn[(motor+2)%3]
-    p2 = mp[(motor+0)%3]; n2 = mn[(motor+0)%3]
-    p3 = mp[(motor+1)%3]; n3 = mn[(motor+1)%3] 
-    
-    if duty > 0:
-        p1.value = duty
-        n1.off()
-    
-    elif duty < 0:
-        p1.value = 1.0 - abs(duty)
-        n1.on()
-
-    if duration is not None:
-        sleep(duration)
-        duty = 0
-            
-    if duty == 0:
-        motor_sleep()
 
 def set_duty_cycles(node, duty, duration=None) -> None:
     if len(duty)!=3:
@@ -197,9 +81,9 @@ class Motor_controller(Node):
         self.W = 3.0
         self.x = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
 
-        self.acceptable_vel_error = 0.1
+        self.acceptable_vel_error = 1000
         self.reset_vel_error = 2.0
-        self.acc_threshold = 0.4
+        self.acc_threshold = 40
         self.d_duty = np.array([1.0, 1.0, 1.0])
     
     def update_state(self, msg):
