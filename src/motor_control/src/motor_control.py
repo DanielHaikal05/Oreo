@@ -73,6 +73,7 @@ class Motor_controller(Node):
         self.cmd_sub = self.create_subscription(String, '/motor_cmd', self.motor_command, 10)
         self.state_sub = self.create_subscription(JointState, '/joint_state', self.update_state, 10)
         self.vel_sub = self.create_subscription(Float32, '/wheel_vel', self.update_wheel_vel, 10)
+        self.feedback_timer = self.create_timer(0.05, self.feedback)
         self.current_cmd = 'Sleep'
         self.prev_cmd = 'Sleep'
 
@@ -90,8 +91,6 @@ class Motor_controller(Node):
         self.x[:,0] = msg.position
         self.x[:,1] = msg.velocity
         self.x[:,2] = msg.effort
-
-        self.feedback()
 
     def update_wheel_vel(self, msg):
         self.W = msg.data
