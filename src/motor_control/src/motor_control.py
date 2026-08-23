@@ -3,7 +3,7 @@ from gpiozero import PWMOutputDevice, DigitalOutputDevice
 from time import sleep, time
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String, Float32
+from std_msgs.msg import String, Float32, Float32MultiArray
 from sensor_msgs.msg import JointState
 from math import cos, pi
 import numpy as np
@@ -75,10 +75,6 @@ class Motor_controller(Node):
         self.vel_sub = self.create_subscription(Float32, '/wheel_vel', self.update_wheel_vel, 10)
         self.feedback_timer = self.create_timer(0.05, self.feedback)
 
-        self.des_w_pub = self.create_publisher(Float32, '/desired_W', 10)
-        self.duty_pub = self.create_publisher(Float32, '/motor_duty', 10)
-        self.debug_timer = self.create_timer(1, self.debug_helper)
-
         self.current_cmd = 'Sleep'
         self.prev_cmd = 'Sleep'
 
@@ -91,6 +87,10 @@ class Motor_controller(Node):
         self.reset_vel_error = 2.0
         self.acc_threshold = 40
         self.d_duty = np.array([1.0, 1.0, 1.0])
+
+        self.des_w_pub = self.create_publisher(Float32MultiArray, '/desired_W', 10)
+        self.duty_pub = self.create_publisher(Float32MultiArray, '/motor_duty', 10)
+        self.debug_timer = self.create_timer(1, self.debug_helper)
     
     def update_state(self, msg):
         self.x[:,0] = msg.position
@@ -164,8 +164,8 @@ class Motor_controller(Node):
         set_duty_cycles(self, self.duty)
 
     def debug_helper(self):
-        des_w_msg = Float32()
-        duty_msg = Float32()
+        des_w_msg = Float32MultiArray()
+        duty_msg = Float32MultiArray()
 
         des_w_msg.data = self.W_des
         duty_msg.data = self.duty
