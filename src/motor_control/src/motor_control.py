@@ -74,6 +74,11 @@ class Motor_controller(Node):
         self.state_sub = self.create_subscription(JointState, '/joint_state', self.update_state, 10)
         self.vel_sub = self.create_subscription(Float32, '/wheel_vel', self.update_wheel_vel, 10)
         self.feedback_timer = self.create_timer(0.05, self.feedback)
+
+        self.des_w_pub = self.create_publisher(Float32, '/desired_W', 10)
+        self.duty_pub = self.create_publisher(Float32, '/motor_duty', 10)
+        self.debug_timer = self.create_timer(1, self.debug_helper)
+
         self.current_cmd = 'Sleep'
         self.prev_cmd = 'Sleep'
 
@@ -157,6 +162,16 @@ class Motor_controller(Node):
         
         self.duty = np.clip(self.duty, -1.0, 1.0)
         set_duty_cycles(self, self.duty)
+
+    def debug_helper(self):
+        des_w_msg = Float32()
+        duty_msg = Float32()
+
+        des_w_msg.data = self.W_des
+        duty_msg.data = self.duty
+
+        self.des_w_pub.publish(des_w_msg)
+        self.duty_pub.publish(duty_msg)
 
                  
                 
