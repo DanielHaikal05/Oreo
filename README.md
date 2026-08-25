@@ -29,7 +29,7 @@ ros2 run gogo_keyboard ros_node & ros2 run motor_control keyboard_listener.py
 | 3 | Test motor 3 |
 
 
-### Read motor encoders
+### Start closed loop motor control
 
 Local:
 
@@ -42,25 +42,9 @@ Pi:
 ```
 cd ~/Oreo
 ./ros shell
-ros2 run motor_control motor_state.py
+ros2 run motor_control motor_state.py & ros2 run motor_control motor_control.py
 ```
 
-
-### Start motor control
-
-Local:
-
-```
-ssh daniel@pi.local
-```
-
-Pi:
-
-```
-cd ~/Oreo
-./ros shell
-ros2 run motor_control motor_control.py
-```
 
 
 ### Plot estimated motor states
