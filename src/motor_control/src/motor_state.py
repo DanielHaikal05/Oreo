@@ -143,7 +143,7 @@ class Motor_state(Node):
         self.pub.publish(msg)
 
         msg2 = Float32MultiArray()
-        msg2.data = self.edge_count
+        msg2.data = self.edge_count.flatten()
         self.edge_pub.publish(msg2)
 
     def detect_timeout(self):
