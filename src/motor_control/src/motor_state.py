@@ -17,6 +17,7 @@ e22 = DigitalInputDevice(21)
 e31 = DigitalInputDevice(9)
 e32 = DigitalInputDevice(10)
 
+GEAR_RATIO = 91
 
 def encoders_status():
     return np.array([[e11.is_active, e12.is_active], [e21.is_active, e22.is_active], [e31.is_active, e32.is_active]])
@@ -116,8 +117,8 @@ class Motor_state(Node):
         self.t_prev[edge_index][m] = t
         qdi = self.x_bar[edge_index][m][1]
 
-        self.x_bar[edge_index][m][0] += self.direction[m] * (2*pi/11)
-        self.x_bar[edge_index][m][1] = self.direction[m] * (2*pi/11) * (1/dt)
+        self.x_bar[edge_index][m][0] += self.direction[m] * (2*pi/11) * (1/GEAR_RATIO)
+        self.x_bar[edge_index][m][1] = self.direction[m] * (2*pi/11) * (1/dt) * (1/GEAR_RATIO)
         self.x_bar[edge_index][m][2] = (self.x_bar[edge_index][m][1] - qdi) / dt
         self.is_valid[edge_index][m] = True
 
