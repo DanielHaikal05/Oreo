@@ -4,6 +4,7 @@ from rclpy.node import Node
 from gpiozero import DigitalInputDevice
 from time import monotonic
 from sensor_msgs.msg import JointState
+from std_msgs.msg import Float32MultiArray
 from math import pi
 import numpy as np
 
@@ -37,6 +38,7 @@ class Motor_state(Node):
         super().__init__('motor_state')
         self.timeout_timer = self.create_timer(1, self.detect_timeout)
         self.pub = self.create_publisher(JointState, '/joint_state', 10)
+        self.edge_pub = self.create_publisher(Float32MultiArray, '/edge_counts', 10)
         
         self.x_bar = np.array([[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
                            [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
@@ -76,9 +78,12 @@ class Motor_state(Node):
 
         e32.when_activated   = lambda: self.read_encoder(2, 1, 1)
         e32.when_deactivated = lambda: self.read_encoder(2, 1, 0)
+
+        self.edge_count = np.zeros((3,2), dtype=int)
     
     
     def read_encoder(self, m, c, s):
+        self.edge_count[m][c] +=1
         if self.encoders[m][c] == s:
             self.get_logger().warning("Called read_encoder with no change")
             return
@@ -136,6 +141,10 @@ class Motor_state(Node):
         msg.effort = self.x[:,2]
         
         self.pub.publish(msg)
+
+        msg2 = Float32MultiArray()
+        msg.data = self.edge_count
+        self.edge_pub.publish(msg2)
 
     def detect_timeout(self):
         t = monotonic()
