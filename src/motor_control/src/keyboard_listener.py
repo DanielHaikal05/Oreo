@@ -15,7 +15,7 @@ class Keyboard_to_cmd(Node):
         self.pressed_keys = {'W': False, 'A': False, 'S': False, 'D': False, 'Space': False, 'Up':False, 'Down':False, 'Right': False, 'Left': False, '1': False, '2': False, '3': False}
 
         self.vel_step = 0.1
-        self.velocity = 3.0
+        self.velocity = 1.0
     
     def retrieve_key(self, msg):
         key_data = json.loads(msg.data)
