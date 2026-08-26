@@ -42,6 +42,8 @@ Pi:
 ```
 cd ~/Oreo
 ./ros shell
+```
+```
 ros2 run motor_control motor_state.py & ros2 run motor_control motor_control.py
 ```
 
