@@ -27,9 +27,9 @@ def encoder_direction(seq1, seq2):
     seq1 = seq1.tolist()
     seq2 = seq2.tolist()
     if (seq1, seq2) in [([0,0], [1,0]), ([1,0], [1,1]), ([1,1], [0,1]), ([0,1], [0,0])]:
-        return 1
-    elif (seq2, seq1) in [([0,0], [1,0]), ([1,0], [1,1]), ([1,1], [0,1]), ([0,1], [0,0])]:
         return -1
+    elif (seq2, seq1) in [([0,0], [1,0]), ([1,0], [1,1]), ([1,1], [0,1]), ([0,1], [0,0])]:
+        return 1
     else:
         return 0
 
@@ -47,7 +47,7 @@ class Motor_state(Node):
                            [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]])  # Each dimension is the estimate from one edge
         self.x = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
         
-        self.direction = np.array([1, 1, 1]) # 1 for CCW, -1 for CW
+        self.direction = np.array([1, 1, 1]) # -1 for CCW, 1 for CW
         self.encoders = encoders_status()
 
         self.timeout = 2
