@@ -38,6 +38,7 @@ class Motor_state(Node):
     def __init__(self):
         super().__init__('motor_state')
         self.timeout_timer = self.create_timer(1, self.detect_timeout)
+        self.pub_timer = self.create_timer(0.01, self.publish_joint_state)
         self.pub = self.create_publisher(JointState, '/joint_state', 10)
         self.edge_pub = self.create_publisher(Float32MultiArray, '/edge_counts', 10)
         
@@ -129,8 +130,6 @@ class Motor_state(Node):
         self.x[m,1:] = np.zeros_like(self.x[m,1:])
         if np.any(valid):
             self.x[m,1:] = np.mean(self.x_bar[valid,m,1:], axis=0)
-
-        self.publish_joint_state()
 
 
     def publish_joint_state(self):
