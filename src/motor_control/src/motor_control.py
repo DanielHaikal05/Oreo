@@ -90,6 +90,7 @@ class Motor_controller(Node):
 
         self.des_w_pub = self.create_publisher(Float32MultiArray, '/desired_W', 10)
         self.duty_pub = self.create_publisher(Float32MultiArray, '/motor_duty', 10)
+        self.dduty_pub = self.create_publisher(Float32MultiArray, '/motor_dduty', 10)
         self.debug_timer = self.create_timer(1, self.debug_helper)
     
     def update_state(self, msg):
@@ -170,12 +171,15 @@ class Motor_controller(Node):
     def debug_helper(self):
         des_w_msg = Float32MultiArray()
         duty_msg = Float32MultiArray()
+        dduty_msg = Float32MultiArray()
 
         des_w_msg.data = self.W_des
         duty_msg.data = self.duty
+        dduty_msg.data = self.d_duty
 
         self.des_w_pub.publish(des_w_msg)
         self.duty_pub.publish(duty_msg)
+        self.dduty_pub.publish(dduty_msg)
 
                  
                 
