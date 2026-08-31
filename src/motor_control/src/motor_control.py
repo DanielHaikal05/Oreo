@@ -165,7 +165,7 @@ class Motor_controller(Node):
             if abs(error[i]) > self.reset_vel_error:
                 self.d_duty[i] = 0.5
 
-            self.d_duty[i] = self.d_duty[i] / 2
+            self.d_duty[i] = min(self.d_duty[i] / 2, 0.02)
             self.duty[i] += np.sign(error[i]) * self.d_duty[i]
         
         self.duty = np.clip(self.duty, -1.0, 1.0)
