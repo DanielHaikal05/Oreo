@@ -84,8 +84,8 @@ class Motor_controller(Node):
         self.x = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
 
         self.acceptable_vel_error = 0.1
-        self.reset_vel_error = 4
-        self.acc_threshold = 20
+        self.reset_vel_error = 5
+        self.acc_threshold = 60
         self.min_duty_step = 0.001
         self.d_duty = np.array([1.0, 1.0, 1.0])
 
