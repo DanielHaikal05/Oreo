@@ -91,6 +91,7 @@ class Motor_controller(Node):
         self.des_w_pub = self.create_publisher(Float32MultiArray, '/desired_W', 10)
         self.duty_pub = self.create_publisher(Float32MultiArray, '/motor_duty', 10)
         self.dduty_pub = self.create_publisher(Float32MultiArray, '/motor_dduty', 10)
+        self.error_pub = self.create_publisher(Float32MultiArray, '/vel_error', 10)
         self.debug_timer = self.create_timer(1, self.debug_helper)
     
     def update_state(self, msg):
@@ -146,24 +147,26 @@ class Motor_controller(Node):
                 self.W_des = np.array([0.0, 0.0, 0.0])
 
     def feedback(self):
+        error = self.W_des - self.x[:,1]
+        self.error = error
+
         for i in range(3):
             if self.W_des[i] == 0:
                 self.duty[i] = 0
                 continue
 
-            error = self.W_des[i] - self.x[i,1]
-            if abs(self.x[i,2]) > self.acc_threshold or abs(error) < self.acceptable_vel_error:
+            if abs(self.x[i,2]) > self.acc_threshold or abs(error[i]) < self.acceptable_vel_error:
                 if abs(self.x[i,2]) > self.acc_threshold:
                     self.get_logger().warning("Waiting for acceleation to settle")
                 else:
                     self.get_logger().warning("Velocity error deemed acceptable")
                 continue
 
-            if abs(error) > self.reset_vel_error:
+            if abs(error[i]) > self.reset_vel_error:
                 self.d_duty[i] = 0.5
 
             self.d_duty[i] = self.d_duty[i] / 2
-            self.duty[i] += np.sign(error) * self.d_duty[i]
+            self.duty[i] += np.sign(error[i]) * self.d_duty[i]
         
         self.duty = np.clip(self.duty, -1.0, 1.0)
         set_duty_cycles(self, self.duty)
@@ -172,14 +175,17 @@ class Motor_controller(Node):
         des_w_msg = Float32MultiArray()
         duty_msg = Float32MultiArray()
         dduty_msg = Float32MultiArray()
+        error_msg = Float32MultiArray()
 
         des_w_msg.data = self.W_des
         duty_msg.data = self.duty
         dduty_msg.data = self.d_duty
+        error_msg.data = self.error
 
         self.des_w_pub.publish(des_w_msg)
         self.duty_pub.publish(duty_msg)
         self.dduty_pub.publish(dduty_msg)
+        self.error_pub.publish(error_msg)
 
                  
                 
