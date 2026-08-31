@@ -91,9 +91,8 @@ class Motor_controller(Node):
 
         self.des_w_pub = self.create_publisher(Float32MultiArray, '/desired_W', 10)
         self.duty_pub = self.create_publisher(Float32MultiArray, '/motor_duty', 10)
-        self.dduty_pub = self.create_publisher(Float32MultiArray, '/motor_dduty', 10)
         self.error_pub = self.create_publisher(Float32MultiArray, '/vel_error', 10)
-        self.debug_timer = self.create_timer(1, self.debug_helper)
+        self.debug_timer = self.create_timer(0.01, self.debug_helper)
     
     def update_state(self, msg):
         self.x[:,0] = msg.position
@@ -175,17 +174,14 @@ class Motor_controller(Node):
     def debug_helper(self):
         des_w_msg = Float32MultiArray()
         duty_msg = Float32MultiArray()
-        dduty_msg = Float32MultiArray()
         error_msg = Float32MultiArray()
 
         des_w_msg.data = self.W_des
-        duty_msg.data = self.duty
-        dduty_msg.data = self.d_duty
+        duty_msg.data = np.array([[self.duty],[self.d_duty]])
         error_msg.data = self.error
 
         self.des_w_pub.publish(des_w_msg)
         self.duty_pub.publish(duty_msg)
-        self.dduty_pub.publish(dduty_msg)
         self.error_pub.publish(error_msg)
 
                  
