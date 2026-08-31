@@ -85,8 +85,8 @@ class Motor_controller(Node):
 
         self.acceptable_vel_error = 0.1
         self.reset_vel_error = 4
-        self.acc_threshold = 50
-        self.min_duty_step = 0.005
+        self.acc_threshold = 20
+        self.min_duty_step = 0.001
         self.d_duty = np.array([1.0, 1.0, 1.0])
 
         self.des_w_pub = self.create_publisher(Float32MultiArray, '/desired_W', 10)
