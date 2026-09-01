@@ -82,6 +82,7 @@ class Motor_controller(Node):
         self.W_des = np.array([0.0, 0.0, 0.0])
         self.W = 1.0
         self.x = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+        self.error = np.array([0.0, 0.0, 0.0])
 
         self.acceptable_vel_error = 0.1
         self.reset_vel_error = 5
