@@ -177,7 +177,7 @@ class Motor_controller(Node):
         error_msg = Float32MultiArray()
 
         des_w_msg.data = self.W_des
-        duty_msg.data = np.concat([[self.duty],[self.d_duty]])
+        duty_msg.data = np.concatenate((self.duty, self.d_duty), axis=0)
         error_msg.data = self.error
 
         self.des_w_pub.publish(des_w_msg)
@@ -195,7 +195,7 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        motor_sleep()
+        motor_sleep(node=node)
         node.destroy_node()
         rclpy.shutdown()
 
