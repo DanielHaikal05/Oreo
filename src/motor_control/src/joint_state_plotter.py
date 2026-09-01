@@ -104,8 +104,8 @@ class JS_Plotter(Node):
 
     def update_duty(self, msg):
         t = time() - self.t0
-        duty = msg.data[0,:]
-        d_duty = msg.data[1,:]
+        duty = msg.data[:3]
+        d_duty = msg.data[3:]
 
         self.t_d = np.append(self.t, t)
         keep = self.t_d >= t - self.window_size   
@@ -114,9 +114,9 @@ class JS_Plotter(Node):
         self.duty1 = np.append(self.duty1, duty[0])[keep]
         self.duty2 = np.append(self.duty2, duty[1])[keep]
         self.duty3 = np.append(self.duty3, duty[2])[keep]
-        self.d_duty1 = np.append(self.d_duty1, duty[0])[keep]
-        self.d_duty2 = np.append(self.d_duty2, duty[1])[keep]
-        self.d_duty3 = np.append(self.d_duty3, duty[2])[keep]
+        self.d_duty1 = np.append(self.d_duty1, d_duty[0])[keep]
+        self.d_duty2 = np.append(self.d_duty2, d_duty[1])[keep]
+        self.d_duty3 = np.append(self.d_duty3, d_duty[2])[keep]
 
     def update_state_plots(self):
         self.v1.set_data(self.t, self.qd1)

@@ -177,7 +177,7 @@ class Motor_controller(Node):
         error_msg = Float32MultiArray()
 
         des_w_msg.data = self.W_des
-        duty_msg.data = np.array([[self.duty],[self.d_duty]])
+        duty_msg.data = np.concat([[self.duty],[self.d_duty]])
         error_msg.data = self.error
 
         self.des_w_pub.publish(des_w_msg)
