@@ -73,7 +73,7 @@ class Motor_controller(Node):
         self.cmd_sub = self.create_subscription(String, '/motor_cmd', self.motor_command, 10)
         self.state_sub = self.create_subscription(JointState, '/joint_state', self.update_state, 10)
         self.vel_sub = self.create_subscription(Float32, '/wheel_vel', self.update_wheel_vel, 10)
-        self.feedback_timer = self.create_timer(0.1, self.feedback)
+        self.feedback_timer = self.create_timer(0.01, self.feedback2)
 
         self.current_cmd = 'Sleep'
         self.prev_cmd = 'Sleep'
@@ -84,7 +84,7 @@ class Motor_controller(Node):
         self.x = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
         self.error = np.array([0.0, 0.0, 0.0])
 
-        self.acceptable_vel_error = 0.1
+        self.acceptable_vel_error = 0.05
         self.reset_vel_error = 5
         self.acc_threshold = 60
         self.min_duty_step = 0.001
@@ -185,7 +185,7 @@ class Motor_controller(Node):
                 self.get_logger().warning("Velocity error deemed acceptable")
                 continue
 
-            self.duty[i] += np.sign(error[i]) * 0.01
+            self.duty[i] += np.sign(error[i]) * 0.005
         
         self.duty = np.clip(self.duty, -1.0, 1.0)
         set_duty_cycles(self, self.duty)        
