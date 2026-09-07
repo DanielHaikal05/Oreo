@@ -12,7 +12,7 @@ class JS_Plotter(Node):
     def __init__(self):
         super().__init__('js_plotter')
         self.sub = self.create_subscription(JointState, 'joint_state', self.update_values, 10)
-        self.duty_sub = self.create_subscription(Float32MultiArray, 'motor_duty', self.update_error)
+        self.duty_sub = self.create_subscription(Float32MultiArray, 'motor_duty', self.update_duty, 10)
 
         self.window_size = 10
         self.t = np.array([])
@@ -22,6 +22,8 @@ class JS_Plotter(Node):
         self.qdd1 = np.array([])
         self.qdd2 = np.array([])
         self.qdd3 = np.array([])
+
+        self.t_d = np.array([])
         self.duty1 = np.array([])
         self.duty2 = np.array([])
         self.duty3 = np.array([])
@@ -58,9 +60,9 @@ class JS_Plotter(Node):
 
         self.fig3, self.ax3 = plt.subplots()
 
-        self.d1 = self.ax3.plot([], [], label='Wheel 1')
-        self.d2 = self.ax3.plot([], [], label='Wheel 2')
-        self.d3 = self.ax3.plot([], [], label='Wheel 3')
+        self.d1, = self.ax3.plot([], [], label='Wheel 1')
+        self.d2, = self.ax3.plot([], [], label='Wheel 2')
+        self.d3, = self.ax3.plot([], [], label='Wheel 3')
 
         self.ax3.set_xlabel('t')
         self.ax3.set_ylabel('D')
@@ -71,9 +73,9 @@ class JS_Plotter(Node):
 
         self.fig4, self.ax4 = plt.subplots()
 
-        self.dd1 = self.ax4.plot([], [], label='Wheel 1')
-        self.dd2 = self.ax4.plot([], [], label='Wheel 2')
-        self.dd3 = self.ax4.plot([], [], label='Wheel 3')
+        self.dd1, = self.ax4.plot([], [], label='Wheel 1')
+        self.dd2, = self.ax4.plot([], [], label='Wheel 2')
+        self.dd3, = self.ax4.plot([], [], label='Wheel 3')
 
         self.ax4.set_xlabel('t')
         self.ax4.set_ylabel('D_D')
@@ -107,16 +109,18 @@ class JS_Plotter(Node):
         duty = msg.data[:3]
         d_duty = msg.data[3:]
 
-        self.t_d = np.append(self.t, t)
+        self.t_d = np.append(self.t_d, t)
         keep = self.t_d >= t - self.window_size   
 
-        self.t_d = self.t[keep]
+        self.t_d = self.t_d[keep]
         self.duty1 = np.append(self.duty1, duty[0])[keep]
         self.duty2 = np.append(self.duty2, duty[1])[keep]
         self.duty3 = np.append(self.duty3, duty[2])[keep]
         self.d_duty1 = np.append(self.d_duty1, d_duty[0])[keep]
         self.d_duty2 = np.append(self.d_duty2, d_duty[1])[keep]
         self.d_duty3 = np.append(self.d_duty3, d_duty[2])[keep]
+
+        self.update_duty_plots()
 
     def update_state_plots(self):
         self.v1.set_data(self.t, self.qd1)
@@ -154,7 +158,7 @@ class JS_Plotter(Node):
         self.dd2.set_data(self.t_d, self.d_duty2)
         self.dd3.set_data(self.t_d, self.d_duty3)
 
-        self.ax4.set_xlim(max(0, self.t[-1] - self.window_size), max(self.window_size, self.t[-1]))
+        self.ax4.set_xlim(max(0, self.t_d[-1] - self.window_size), max(self.window_size, self.t_d[-1]))
         self.ax4.relim()
         self.ax4.autoscale_view(scalex=False, scaley=True)
 
