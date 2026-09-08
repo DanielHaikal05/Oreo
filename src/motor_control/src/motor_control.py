@@ -185,7 +185,7 @@ class Motor_controller(Node):
                 self.get_logger().warning("Velocity error deemed acceptable")
                 continue
 
-            self.duty[i] += np.sign(error[i]) * 0.01
+            self.duty[i] += np.sign(error[i]) * 0.003
         
         self.duty = np.clip(self.duty, -1.0, 1.0)
         set_duty_cycles(self, self.duty)        
