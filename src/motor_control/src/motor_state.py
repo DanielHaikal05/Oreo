@@ -77,7 +77,55 @@ class Motor_state(Node):
         e32.when_activated   = lambda: self.read_encoder(2, 1, 1)
         e32.when_deactivated = lambda: self.read_encoder(2, 1, 0)
     
-    
+    def read_encoder1(self, m, c, s):
+        self.edge_count[m][c] +=1
+        if self.encoders[m][c] == s:
+            self.get_logger().warning("Called read_encoder with no change")
+            return
+        
+        encoder_reading = self.encoders.copy()
+        encoder_reading[m][c] = s
+        t = monotonic()
+
+        direction = encoder_direction(self.encoders[m], encoder_reading[m])
+        if direction == 0:
+            self.get_logger().error(f"Invalid transition: {self.encoders[m]} --> {encoder_reading[m]}")
+            return
+        
+        if direction != self.direction[m]:
+            self.x[m,1:] = np.array([0,0])
+            self.x_bar[:,m,1:] = np.array([[0,0], [0,0], [0,0], [0,0]])
+            self.direction[m] = direction
+            self.t_prev[:,m] = None
+            self.is_valid[:,m] = False  
+
+        self.encoders[m] = encoder_reading[m]
+
+        a = encoder_reading[m][0]; b = encoder_reading[m][1]
+        edge_index = 3*a + b - 2*a*b
+
+        if self.t_prev[edge_index][m] is None:
+            self.t_prev[edge_index][m] = t
+            return
+
+        dt = t - self.t_prev[edge_index][m]
+        self.t_prev[edge_index][m] = t
+        qdi = self.x_bar[edge_index][m][1]
+
+        self.x_bar[edge_index][m][0] += self.direction[m] * (2*pi/11) * (1/GEAR_RATIO)
+        self.x_bar[edge_index][m][1] = self.direction[m] * (2*pi/11) * (1/dt) * (1/GEAR_RATIO)
+        self.x_bar[edge_index][m][2] = (self.x_bar[edge_index][m][1] - qdi) / dt
+        self.is_valid[edge_index][m] = True
+
+        if edge_index == 0:
+            self.x[m,0] = self.x_bar[edge_index][m][0]
+
+        valid = self.is_valid[:,m]
+        self.x[m,1:] = np.zeros_like(self.x[m,1:])
+        if np.any(valid):
+            self.x[m,1:] = np.mean(self.x_bar[valid,m,1:], axis=0)
+
+
     def read_encoder(self, m, c, s):
         t = monotonic()
         self.edge_count[m][c] +=1
@@ -96,7 +144,7 @@ class Motor_state(Node):
         self.encoders[m] = encoder_reading[m]
 
         self.edges[m,:] = np.concatenate((self.edges[m,1:], [self.edges[m,-1] + direction]))
-        dt = t - self.t[m,-1]
+        dt = t - self.t[m,0]
         self.t[m,:] = np.concatenate((self.t[m,1:], [t]))
 
         dx = self.edges[m,-1] - self.edges[m,0]
